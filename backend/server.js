@@ -14,17 +14,36 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app); // wrap express with http
 
+// Allowed frontend origins (comma-separated). Examples:
+// - http://localhost:3000
+// - https://smart-tourism.vercel.app
+const CLIENT_ORIGINS = (process.env.CLIENT_ORIGINS || "http://localhost:3000")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+const isOriginAllowed = (origin) => {
+  // allow non-browser requests (no Origin) like curl/postman/health checks
+  if (!origin) return true;
+  return CLIENT_ORIGINS.includes(origin);
+};
+
 // Socket.IO setup
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: (origin, cb) => cb(null, isOriginAllowed(origin)),
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
 
 // Middleware
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(
+  cors({
+    origin: (origin, cb) => cb(null, isOriginAllowed(origin)),
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Routes
