@@ -4,6 +4,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { favoritesAPI } from "../../utils/api";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
@@ -34,11 +35,18 @@ const StarRating = ({ rating }) => {
 };
 
 const DestinationCard = ({ destination, showScore = false, matchedCategories = [], initialFavorited = false, onFavoriteChange }) => {
+  const navigate = useNavigate();
   const [imgError, setImgError] = useState(false);
   const [favorited, setFavorited] = useState(initialFavorited);
   const [favLoading, setFavLoading] = useState(false);
   const { isAuthenticated } = useAuth();
   const fallbackImg = `https://picsum.photos/seed/${encodeURIComponent(destination.name)}/800/600`;
+  const destinationId = destination._id || destination.id;
+
+  const goToDetail = () => {
+    if (!destinationId) return;
+    navigate(`/destination/${destinationId}`);
+  };
 
   const handleFavorite = async (e) => {
     e.stopPropagation();
@@ -63,7 +71,18 @@ const DestinationCard = ({ destination, showScore = false, matchedCategories = [
   };
 
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300 hover:-translate-y-1 flex flex-col">
+    <div
+      role="link"
+      tabIndex={0}
+      onClick={goToDetail}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          goToDetail();
+        }
+      }}
+      className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-slate-100 transition-all duration-300 hover:-translate-y-1 flex flex-col cursor-pointer"
+    >
       {/* Image */}
       <div className="relative overflow-hidden h-48">
         <img
