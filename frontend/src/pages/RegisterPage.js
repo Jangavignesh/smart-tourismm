@@ -73,9 +73,11 @@ const RegisterPage = () => {
   // ── Real Email Validation using Abstract API ─────────────
   const verifyEmail = async (email) => {
     const API_KEY = process.env.REACT_APP_EMAIL_VERIFY_KEY;
+    const DISABLE_EMAIL_VERIFY = (process.env.REACT_APP_DISABLE_EMAIL_VERIFY || "").toLowerCase() === "true";
 
     // If no API key or API fails — use smart format check
-    if (!API_KEY || API_KEY === "your_key_here") {
+    // Or if disabled in production via env flag
+    if (DISABLE_EMAIL_VERIFY || !API_KEY || API_KEY === "your_key_here") {
       return smartEmailCheck(email);
     }
 
