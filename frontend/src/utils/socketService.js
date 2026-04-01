@@ -14,7 +14,8 @@ export const initSocket = (token, onReady) => {
   }
 
   const loadAndConnect = () => {
-    socket = window.io("http://localhost:5000", {
+    const socketUrl = process.env.REACT_APP_SOCKET_URL || "http://localhost:5000";
+    socket = window.io(socketUrl, {
       auth: { token },
       transports: ["websocket", "polling"],
     });
