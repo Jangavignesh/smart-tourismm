@@ -14,58 +14,24 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app); // wrap express with http
 
-// Allowed frontend origins (comma-separated). Examples:
-// - http://localhost:3000
-// - https://smart-tourism.vercel.app
-const CLIENT_ORIGINS = (process.env.CLIENT_ORIGINS || "http://localhost:3000")
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
-
-const isOriginAllowed = (origin) => {
-  // allow non-browser requests (no Origin) like curl/postman/health checks
-  if (!origin) return true;
-  if (CLIENT_ORIGINS.includes(origin)) return true;
-
-  // Allow Vercel preview deployments if you deploy frontend there.
-  // Example: https://smart-tourismm-vaa2.vercel.app
-  try {
-    const u = new URL(origin);
-    if (u.hostname.endsWith(".vercel.app")) return true;
-  } catch {
-    // ignore invalid origin values
-  }
-
-  return false;
-};
-
-const corsOptions = {
-  origin: (origin, cb) => {
-    if (!origin) return cb(null, true);
-    if (isOriginAllowed(origin)) return cb(null, origin); // echo back exact origin
-    return cb(new Error(`CORS blocked origin: ${origin}`));
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
+// CORS setup
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://smart-tourismm-vaa2.vercel.app",
+  process.env.CORS_ORIGIN
+].filter(Boolean);
 
 // Socket.IO setup
 const io = new Server(server, {
   cors: {
-    origin: (origin, cb) => {
-      if (!origin) return cb(null, true);
-      if (isOriginAllowed(origin)) return cb(null, origin);
-      return cb(new Error(`CORS blocked origin: ${origin}`));
-    },
-    methods: ["GET", "POST"],
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
   },
 });
 
 // Middleware
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // handle preflight
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 // Routes
@@ -81,6 +47,7 @@ const expenseRoutes      = require("./routes/expenseRoutes");
 const itineraryRoutes    = require("./routes/itineraryRoutes");
 const analyticsRoutes      = require("./routes/analyticsRoutes");
 const notificationRoutes   = require("./routes/notificationRoutes");
+const poiRoutes            = require("./routes/poiRoutes");
 
 app.use("/api/auth",         authRoutes);
 app.use("/api/users",        userRoutes);
@@ -94,6 +61,7 @@ app.use("/api/expenses",       expenseRoutes);
 app.use("/api/itinerary",      itineraryRoutes);
 app.use("/api/analytics",      analyticsRoutes);
 app.use("/api/notifications",   notificationRoutes);
+app.use("/api/poi",            poiRoutes);
 
 // ── Socket.IO Real-Time Chat ─────────────────────────────────
 const Message = require("./models/Message");
