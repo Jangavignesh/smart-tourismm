@@ -3,7 +3,7 @@
 // ============================================================
 
 import { AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+
 import AppLoader from "./components/common/AppLoader";
 import PageTransition from "./components/common/PageTransition";
 import React from "react";

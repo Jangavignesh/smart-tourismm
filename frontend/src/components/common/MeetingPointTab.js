@@ -380,7 +380,7 @@ const MeetingPointTab = ({ tripId, tripMembers }) => {
       mapInstanceRef.current = map;
     }, 300);
     return () => clearTimeout(timer);
-  }, [mapLoaded, poll, bestPlace, tripMembers]);
+  }, [mapLoaded, poll, bestPlace, tripMembers, nearbyPlaces]);
 
   const fetchPoll = async () => {
     setLoading(true);
