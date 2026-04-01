@@ -14,17 +14,24 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app); // wrap express with http
 
+// CORS setup
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://smart-tourismm-vaa2.vercel.app",
+  process.env.CORS_ORIGIN
+].filter(Boolean);
+
 // Socket.IO setup
 const io = new Server(server, {
   cors: {
-    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
-    methods: ["GET", "POST"],
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
   },
 });
 
 // Middleware
-app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 // Routes
