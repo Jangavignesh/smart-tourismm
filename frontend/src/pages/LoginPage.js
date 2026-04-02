@@ -39,7 +39,7 @@ const LoginPage = () => {
     setLoading(true);
     try {
       const res = await login(form.email, form.password);
-      toast.success(res.message || "Welcome back! 👋");
+      toast.success(res.message || "Welcome! 👋");
       navigate(redirectTo, { replace: true });
     } catch (err) {
       const msg = err.response?.data?.message || "Login failed. Try again.";
@@ -62,7 +62,7 @@ const LoginPage = () => {
           {/* Header */}
           <div className="text-center mb-8">
             <Link to="/" className="inline-block text-4xl mb-3">🌍</Link>
-            <h1 className="text-2xl font-bold text-slate-800">Welcome back!</h1>
+            <h1 className="text-2xl font-bold text-slate-800">Welcome!</h1>
             <p className="text-slate-400 text-sm mt-1">Sign in to your SmartTrip account</p>
           </div>
 
