@@ -19,7 +19,7 @@ const FEATURES = [
   { icon: "🤖", title: "AI Recommendations", desc: "Smart matching engine ranks destinations based on your unique travel interests." },
   { icon: "🗺️", title: "Explore India", desc: "From Himalayan peaks to tropical beaches — discover every corner of incredible India." },
   { icon: "🔒", title: "Secure & Private", desc: "JWT authentication and bcrypt password hashing keep your account safe." },
-  { icon: "🚀", title: "Group Planning (Coming Soon)", desc: "Plan trips with friends — real-time chat, location sharing, meeting point finder." },
+  { icon: "🚀", title: "Group Planning", desc: "Plan trips with friends — real-time chat, location sharing, meeting point finder." },
 ];
 
 const HomePage = () => {
@@ -189,9 +189,6 @@ const HomePage = () => {
       {/* ── Future Scope Section ─────────────────────────── */}
       <section className="py-20 bg-gradient-to-br from-blue-950 to-slate-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-block bg-amber-500/20 border border-amber-400/30 rounded-full px-4 py-1.5 text-sm text-amber-300 mb-6">
-            🔜 Coming Soon
-          </div>
           <h2 className="text-3xl font-bold mb-4">Group Trip Planning</h2>
           <p className="text-slate-300 max-w-2xl mx-auto mb-10">
             Plan trips with your crew — real-time chat, live location sharing, and an AI that finds the perfect meeting point for everyone.
@@ -201,16 +198,25 @@ const HomePage = () => {
               <div key={f} className="bg-white/10 rounded-xl p-4 text-sm text-slate-300 border border-white/10">{f}</div>
             ))}
           </div>
+          <div className="mt-10 flex justify-center">
+            <Link
+              to="/group-trips"
+              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold rounded-xl transition-all shadow-lg shadow-amber-500/20"
+            >
+              👥 Go to Group Trips
+            </Link>
+          </div>
         </div>
       </section>
 
       {/* ── Footer ──────────────────────────────────────── */}
       <footer className="bg-slate-900 text-slate-400 py-8 text-center text-sm">
-        <p>© 2024 SmartTrip — Smart Tourism & Group Trip Planning System</p>
-        <p className="mt-1 text-slate-500">Built with MERN Stack + AI Recommendation Engine</p>
+        <p>© {new Date().getFullYear()} SmartTrip</p>
       </footer>
     </div>
   );
 };
 
 export default HomePage;
+
+
