@@ -115,7 +115,7 @@ const DashboardPage = () => {
                 {user?.name?.charAt(0).toUpperCase()}
               </div>
               <div>
-                <h1 className="text-2xl font-bold">Welcome back, {user?.name?.split(" ")[0]}! 👋</h1>
+                <h1 className="text-2xl font-bold">Welcome, {user?.name?.split(" ")[0]}! 👋</h1>
                 <p className="text-slate-300 text-sm">{user?.email} · Member since {joinDate}</p>
               </div>
             </div>
@@ -324,3 +324,4 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
+
